@@ -34,7 +34,9 @@ export async function getCategoriesById(idCategory: number) {
 
 export async function createCategory(model: ICategoryCreate) {
   const data = await http
-    .post("/api/categories/addCategory", model)
+    .post("/api/categories/addCategory", model, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
     .then((response) => {
       return {
         response,

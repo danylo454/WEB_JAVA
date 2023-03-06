@@ -37,7 +37,7 @@ const CategoryReducer = (
       };
     }
     case CategoryActionTypes.START_REQUEST: {
-      return { ...state, loading: true, message: "" };
+      return { ...state, loading: true, message: "", categories: [] };
     }
     case CategoryActionTypes.SUCCESSFUL_REQUEST_LIST_CATEGORYES: {
       return { ...state, loading: false, categories: action.payload };

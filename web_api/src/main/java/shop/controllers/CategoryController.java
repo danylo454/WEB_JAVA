@@ -45,13 +45,13 @@ public class CategoryController {
 
 
 
-        } catch (Exception ex) {
+         } catch (Exception ex) {
             return new ServiceResponseDto("ERORR SERVER: " + ex.getMessage().toString());
         }
     }
 
-    @PostMapping("addCategory")
-    public ServiceResponseDto addCategory(@RequestBody CategoryCreateDTO model) {
+    @PostMapping(value = "addCategory" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ServiceResponseDto addCategory(@ModelAttribute CategoryCreateDTO model) {
         try {
             return categoryService.create(model);
         } catch (Exception ex) {

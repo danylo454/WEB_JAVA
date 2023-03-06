@@ -136,7 +136,7 @@ export const UpdateCategory = (model: ICategoryUpdate) => {
 export const RemoveCategory = (id: number) => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
-      dispatch({ type: CategoryActionTypes.START_REQUEST });
+      // dispatch({ type: CategoryActionTypes.START_REQUEST });
 
       const data = await removeCategory(id);
 

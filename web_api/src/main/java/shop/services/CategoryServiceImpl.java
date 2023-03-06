@@ -42,9 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
     public ServiceResponseDto create(CategoryCreateDTO model) {
         if (model != null) {
             var newCategory = categoryMapper.categoryEntityByCategoryCreateDTO(model);
-            String file = model.getBase64();
-            if (!file.isEmpty()) {
-                var fileName = storageService.save(file);
+            if (model.getFile()!= null) {
+                var fileName = storageService.saveMultipartFile(model.getFile());
                 newCategory.setImage(fileName);
             }
             categoryRepository.save(newCategory);
@@ -66,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (tempCategory != null) {
             var categoryToUpdate = categoryMapper.categoryEntityByCategoryUpdateDTO(model);
             String file = model.getNewImage();
-            if (!file.isEmpty()) {
+            if (file != null) {
                 var fileName = storageService.save(file);
                 categoryToUpdate.setImage(fileName);
                 storageService.removeFile(tempCategory.getImage());

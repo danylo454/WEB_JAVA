@@ -1,7 +1,7 @@
 export interface ICategoryCreate {
   name: string;
   description: string;
-  base64: string;
+  file: File | null;
 }
 export interface ICategoryUpdate {
   id: number;

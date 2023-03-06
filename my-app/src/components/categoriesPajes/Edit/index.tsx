@@ -14,6 +14,9 @@ const EditCategory = () => {
     (store) => store.CategoryReducer
   );
   const [model, setModel] = useState<String>("");
+  const [modelcategoryForUpdate, setModelcategoryForUpdate] = useState(
+    categoryForUpdate.image
+  );
 
   const { id } = useParams();
 
@@ -38,6 +41,7 @@ const EditCategory = () => {
       newImage: model == "" ? null : model.toString(),
       id: categoryForUpdate.id,
     };
+    console.log("Update", newCategory);
     UpdateCategory(newCategory);
   };
   const onFileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +57,7 @@ const EditCategory = () => {
       };
     }
     target.value = "";
+    setModelcategoryForUpdate("");
   };
 
   return (
@@ -104,9 +109,9 @@ const EditCategory = () => {
                             style={{ maxHeight: "280px" }}
                             className="max-w-xs w-30 items-center border"
                             src={
-                              model == ""
+                              categoryForUpdate.image != "" && model == ""
                                 ? "http://localhost:8081/api/categories/files/600_" +
-                                  categoryForUpdate.image.toString()
+                                  categoryForUpdate.image
                                 : model.toString()
                             }
                             alt="Category Image"
@@ -151,6 +156,7 @@ const EditCategory = () => {
                           Опис
                         </label>
                         <Field
+                          as="textarea"
                           id="description"
                           name="description"
                           className="border-1  rounded-r px-4 py-2 w-full border-2 border-black-600 ..."

@@ -26,6 +26,7 @@ const Home = () => {
       window.confirm("Are you sure you want to delet category with id: " + id)
     ) {
       RemoveCategory(id);
+      // GetCategories();
       //yes
     } else {
       // no
