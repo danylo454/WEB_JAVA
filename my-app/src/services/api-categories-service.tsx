@@ -1,7 +1,7 @@
 import {
   ICategoryCreate,
   ICategoryUpdate,
-} from "../components/categoriesPajes/types";
+} from "../components/categoriesPages/types";
 import http from "../services/http_common";
 
 export async function getCategories() {

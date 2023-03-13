@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import {
   ICategoryCreate,
   ICategoryUpdate,
-} from "../../../components/categoriesPajes/types";
+} from "../../../components/categoriesPages/types";
 import {
   createCategory,
   getCategories,
@@ -44,6 +44,7 @@ export const GetCategoriesById = (id: number) => {
       dispatch({ type: CategoryActionTypes.START_REQUEST });
       const data = await getCategoriesById(id);
       const { response } = data;
+      console.log("response: ", response);
 
       dispatch({
         type: CategoryActionTypes.SUCCESSFUL_REQUEST_CATEGORY_BY_ID,
