@@ -10,6 +10,8 @@ import CategoryCreatePage from "./components/categoriesPages/Create";
 import { ToastContainer } from "react-toastify";
 import HomeProducts from "./components/productsPages/home";
 import ProductCreatePage from "./components/productsPages/Create";
+import ProductEditPage from "./components/productsPages/Edit";
+import InfoProdut from "./components/productsPages/Info";
 
 function App() {
   return (
@@ -23,6 +25,14 @@ function App() {
           <Route path="category/products/:id" element={<HomeProducts />} />
           <Route path="categories/create" element={<CategoryCreatePage />} />
           <Route path="product/create/:id" element={<ProductCreatePage />} />
+          <Route
+            path="category/products/update/:idCategory/:idProduct"
+            element={<ProductEditPage />}
+          />
+          <Route
+            path="category/products/info/:idCategory/:idProduct"
+            element={<InfoProdut />}
+          />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

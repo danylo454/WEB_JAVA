@@ -43,7 +43,7 @@ const Home = () => {
         <div className="flex items-center">
           {product.image == null ? (
             <svg
-              className="h-full w-full text-gray-300"
+              className="w-25 h-20 rounded-full"
               fill="currentColor"
               viewBox="0 0 24 24"
             >

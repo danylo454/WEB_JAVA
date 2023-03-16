@@ -56,8 +56,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryItemDTO getById(int id) {
+        var categoryOptinal = categoryRepository.findById(id);
+        if(categoryOptinal.isPresent())
+        {
+            var data = categoryMapper.categoryItemDTO(categoryOptinal.get());
+            return data;
+        }
         return null;
     }
+
 
     @Override
     public ServiceResponseDto update(CategoryUpdateDTO model) {

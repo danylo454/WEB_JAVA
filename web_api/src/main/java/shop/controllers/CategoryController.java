@@ -14,7 +14,6 @@ import shop.dto.category.CategoryItemDTO;
 import shop.dto.category.CategoryUpdateDTO;
 import shop.entities.CategoryEntity;
 import shop.interfaces.CategoryService;
-import shop.mapper.CategoryMapper;
 import shop.repositories.CategoryRepository;
 import shop.storage.StorageService;
 
@@ -26,7 +25,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("api/categories")
 public class CategoryController {
-    private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
     private final StorageService storageService;
     private final CategoryService categoryService;
@@ -45,7 +43,7 @@ public class CategoryController {
 
 
 
-         } catch (Exception ex) {
+        } catch (Exception ex) {
             return new ServiceResponseDto("ERORR SERVER: " + ex.getMessage().toString());
         }
     }
@@ -60,10 +58,11 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryEntity> getCategoryById(@PathVariable("id") int categoryId) {
-        var categoryOptinal = categoryRepository.findById(categoryId);
-        if (categoryOptinal.isPresent()) {
-            return new ResponseEntity<>(categoryOptinal.get(), HttpStatus.OK);
+    public ResponseEntity<CategoryItemDTO> getCagegoryById(@PathVariable("id") int categoryId) {
+        var category = categoryService.getById(categoryId);
+        if(category!=null)
+        {
+            return new ResponseEntity<>(category, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }

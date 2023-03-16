@@ -1,0 +1,7 @@
+.scroll{
+    resize: none;
+    text-align: center;
+}
+.scroll::-webkit-scrollbar {
+    display: none;
+  }
