@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import Loader from "../loader";
+import ModalDelete from "../modal/delete";
 import "./index.css";
 
 const Home = () => {
@@ -22,15 +23,7 @@ const Home = () => {
   }
 
   const DeleteCategoryHandler = (id: number) => {
-    console.log("Id product: " + id);
-    if (
-      window.confirm("Are you sure you want to delet category with id: " + id)
-    ) {
-      RemoveCategory(id);
-      //yes
-    } else {
-      // no
-    }
+    RemoveCategory(id);
   };
 
   const table_body = categories?.map((product) => (
@@ -91,14 +84,20 @@ const Home = () => {
           >
             Редагувати
           </Link>
-          <button
+          {/* <button
             onClick={() => DeleteCategoryHandler(product.id)}
             type="button"
             style={{ background: "red" }}
             className=" rounded bg-success px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#14a44d] transition duration-150 ease-in-out hover:bg-success-600 hover:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:bg-success-600 focus:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:outline-none focus:ring-0 active:bg-success-700 active:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)]"
           >
             Видалити
-          </button>
+          </button> */}
+          <ModalDelete
+            id={product.id}
+            deleteFunc={DeleteCategoryHandler}
+            title="Видалення категорії"
+            text={`Ви дійсно бажаєте видалити категорію '${product.name}'?`}
+          />
           <Link
             to={"category/products/" + product.id}
             type="button"
@@ -128,31 +127,39 @@ const Home = () => {
             </Link>
           </div>
         </div>
+        {table_body.length == 0 ? (
+          <div className="flex justify-center ... ">
+            <h1 className="border-2 border-black  rounded-lg p-2 ">
+              Немає ні одної категорії
+            </h1>
+          </div>
+        ) : (
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="border-b bg-gray-800">
+                <tr>
+                  <th
+                    className="px-6 py-3 w-40 ... px-4 py-2 text-sm font-medium text-white"
+                    style={{ textAlign: "center" }}
+                  >
+                    Імя Категорії
+                  </th>
+                  <th className="px-6 py-3 px-4 py-2 text-sm font-medium text-white">
+                    Опис
+                  </th>
+                  <th
+                    className="px-6 py-3 px-4 py-2 text-sm font-medium text-white"
+                    style={{ textAlign: "center" }}
+                  >
+                    Дії
+                  </th>
+                </tr>
+              </thead>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="border-b bg-gray-800">
-              <tr>
-                <th
-                  className="px-6 py-3 w-40 ... px-4 py-2 text-sm font-medium text-white"
-                  style={{ textAlign: "center" }}
-                >
-                  Імя Категорії
-                </th>
-                <th className="px-6 py-3 px-4 py-2 text-sm font-medium text-white">
-                  Опис
-                </th>
-                <th
-                  className="px-6 py-3 px-4 py-2 text-sm font-medium text-white"
-                  style={{ textAlign: "center" }}
-                >
-                  Дії
-                </th>
-              </tr>
-            </thead>
-            <tbody>{table_body}</tbody>
-          </table>
-        </div>
+              <tbody>{table_body}</tbody>
+            </table>
+          </div>
+        )}
       </div>
     </>
   );

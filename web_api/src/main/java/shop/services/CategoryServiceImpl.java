@@ -12,6 +12,7 @@ import shop.entities.CategoryEntity;
 import shop.interfaces.CategoryService;
 import shop.mapper.CategoryMapper;
 import shop.repositories.CategoryRepository;
+import shop.repositories.ProductRepository;
 import shop.storage.StorageService;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
     private final StorageService storageService;
+    private final ProductRepository productyRepository;
 
     @Override
     public List<CategoryItemDTO> get() {
@@ -34,6 +36,12 @@ public class CategoryServiceImpl implements CategoryService {
     public String delete(int id) {
         CategoryEntity category = categoryRepository.findById(id).get();
         storageService.removeFile(category.getImage());
+        var dataProduct = category.getProducts();
+        for (var product : dataProduct){
+            for (var img : product.getProductImages()) {
+                storageService.removeFile(img.getName());
+            }
+        }
         categoryRepository.deleteById(id);
         return "Катагорія знищена.";
     }

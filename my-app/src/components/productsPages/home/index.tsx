@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import Loader from "../../loader";
+import ModalDelete from "../../modal/delete";
 
 const HomeProducts = () => {
   const { GetProductsCategories, RemoveProduct } = useActions();
@@ -17,15 +18,7 @@ const HomeProducts = () => {
     return <Loader />;
   }
   const DeleteProductHandler = (id: number) => {
-    console.log("Id product: " + id);
-    if (
-      window.confirm("Are you sure you want to delet product with id: " + id)
-    ) {
-      RemoveProduct(id);
-      //yes
-    } else {
-      // no
-    }
+    RemoveProduct(id);
   };
 
   const DataProducts = products.map((product) => (
@@ -82,13 +75,19 @@ const HomeProducts = () => {
             >
               Редагувати
             </Link>
-            <button
+            <ModalDelete
+              id={product.id}
+              deleteFunc={DeleteProductHandler}
+              title="Видалення товара"
+              text={`Ви дійсно бажаєте видалити товар '${product.name}'?`}
+            />
+            {/* <button
               onClick={() => DeleteProductHandler(product.id)}
               type="button"
               className="ml-2 text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Видалити
-            </button>
+            </button> */}
           </div>
         </footer>
       </article>
@@ -111,7 +110,15 @@ const HomeProducts = () => {
           </div>
         </div>
         <div className="container  mx-auto px-4 md:px-12">
-          <div className="flex flex-wrap -mx-1 lg:-mx-4">{DataProducts}</div>
+          {products.length == 0 ? (
+            <div className="flex justify-center ... ">
+              <h1 className="border-2 border-black  rounded-lg p-2 ">
+                В цій категорії товари відсутні
+              </h1>
+            </div>
+          ) : (
+            <div className="flex flex-wrap -mx-1 lg:-mx-4 ">{DataProducts}</div>
+          )}
         </div>
       </div>
     </>

@@ -1,13 +1,14 @@
 import { Field, Formik } from "formik";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import Loader from "../../loader";
-import { ICategoryCreate, ICategoryUpdate } from "../types";
+import { ICategoryUpdate } from "../types";
 import { UpdateCategorySchema } from "../validate";
 import "react-toastify/dist/ReactToastify.css";
+import { Editor } from "@tinymce/tinymce-react";
 const EditCategory = () => {
   const { GetCategoriesById, UpdateCategory } = useActions();
   const { loading, categoryForUpdate, message } = useTypedSelector(
@@ -42,7 +43,7 @@ const EditCategory = () => {
       id: categoryForUpdate.id,
     };
     console.log("Update", newCategory);
-    UpdateCategory(newCategory);
+    // UpdateCategory(newCategory);
   };
   const onFileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
@@ -162,6 +163,7 @@ const EditCategory = () => {
                           className="border-1  rounded-r px-4 py-2 w-full border-2 border-black-600 ..."
                           type="text"
                         />
+
                         {errors.description && touched.description ? (
                           <div style={{ color: "red" }}>
                             {errors.description}

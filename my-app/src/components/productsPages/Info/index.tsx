@@ -13,27 +13,44 @@ import {
   ProductActionTypes,
   ProductsActions,
 } from "../../../store/reducers/productReducer/types";
+import { number } from "yup";
 const InfoProdut = () => {
   const { GetByIdProduct, StartReques } = useActions();
-  const { loading, message, productForUpdate } = useTypedSelector(
+  const { message, productForUpdate } = useTypedSelector(
     (store) => store.ProductsReducer
   );
   const { idProduct, idCategory } = useParams();
   const [product, setProduct] = useState<IItemProduct>();
+  const [count, setCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     http.get(`/api/products/getProduct/` + idProduct).then((resp) => {
       const { data } = resp;
       setProduct(data.payload);
+      setLoading(false);
     });
-
-    GetByIdProduct(parseInt(idProduct!));
   }, []);
+
   if (loading) {
     return <Loader />;
   }
-  const ClickLeft = () => {};
-  const ClickRight = () => {};
+  const ClickLeft = () => {
+    var temp = count;
+
+    if (temp == 0) {
+    } else {
+      setCount(--temp);
+    }
+  };
+  const ClickRight = () => {
+    var temp = count;
+
+    if (temp + 2 > product?.files.length!) {
+    } else {
+      setCount(++temp);
+    }
+  };
   return (
     <>
       <ToastContainer draggable={false} autoClose={3000} />
@@ -56,24 +73,42 @@ const InfoProdut = () => {
             </div>
             <div className="h-full">
               <div className="border-b-2 block md:flex">
-                <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
-                  <div className="w-full p-8 mx-2 flex justify-center items-center">
-                    <AiOutlineArrowLeft style={{ fontSize: "30px" }} />
+                <div className="w-full  md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
+                  <div className="w-full  p-8 mx-2 flex justify-center items-center">
                     {product?.files[0] != null ? (
+                      <>
+                        <button type="button">
+                          <AiOutlineArrowLeft
+                            onClick={ClickLeft}
+                            style={{ fontSize: "30px", cursor: "pointer" }}
+                          />
+                        </button>{" "}
+                        <img
+                          style={{ minHeight: "280px", cursor: "pointer" }}
+                          className="max-w-xs w-30 items-center border mr-4 ml-4"
+                          alt="Products"
+                          src={
+                            "http://localhost:8081/api/products/files/1200_" +
+                            product?.files[count]
+                          }
+                        ></img>{" "}
+                        <button type="button">
+                          <AiOutlineArrowRight
+                            onClick={ClickRight}
+                            style={{ fontSize: "30px", cursor: "pointer" }}
+                          />
+                        </button>
+                      </>
+                    ) : (
                       <img
-                        style={{ maxHeight: "280px", cursor: "pointer" }}
+                        style={{ minHeight: "280px", cursor: "pointer" }}
                         className="max-w-xs w-30 items-center border mr-4 ml-4"
                         alt="Products"
                         src={
-                          "http://localhost:8081/api/products/files/1200_" +
-                          product?.files[0]
+                          "http://localhost:8081/api/products/files/notFoundImage.jpg"
                         }
                       ></img>
-                    ) : null}
-
-                    <AiOutlineArrowRight
-                      style={{ fontSize: "30px", cursor: "pointer" }}
-                    />
+                    )}
                   </div>
                 </div>
 
@@ -91,7 +126,7 @@ const InfoProdut = () => {
                         disabled
                         required
                         id="name"
-                        defaultValue={productForUpdate.name}
+                        defaultValue={product?.name}
                         name="name"
                         className="border-1  rounded-r px-4 py-2 w-full border-2 border-black-600 ..."
                         type="text"
@@ -105,7 +140,7 @@ const InfoProdut = () => {
                         Опис
                       </label>
                       <textarea
-                        defaultValue={productForUpdate.description}
+                        defaultValue={product?.description}
                         disabled
                         id="description"
                         name="description"
@@ -124,7 +159,7 @@ const InfoProdut = () => {
                         disabled
                         required
                         id="price"
-                        defaultValue={productForUpdate.price}
+                        defaultValue={product?.price}
                         name="price"
                         className="border-1  rounded-r px-4 py-2 w-full border-2 border-black-600 ..."
                       />
@@ -141,7 +176,7 @@ const InfoProdut = () => {
                         disabled
                         required
                         id="price"
-                        defaultValue={productForUpdate.category}
+                        defaultValue={product?.category}
                         name="price"
                         className="border-1  rounded-r px-4 py-2 w-full border-2 border-black-600 ..."
                       />
