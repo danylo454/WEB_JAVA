@@ -9,3 +9,8 @@ export interface ICategoryUpdate {
   description: string;
   newImage: string | null;
 }
+export interface IUserRegister {
+  name: string;
+  description: string;
+  file: File | null;
+}

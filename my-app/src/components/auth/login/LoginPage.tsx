@@ -2,6 +2,8 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import trees from "../../../assets/trees.jpg";
 import { Link } from "react-router-dom";
+import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 const LoginPage = () => {
   return (
     <>

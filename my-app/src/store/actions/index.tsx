@@ -1,7 +1,9 @@
-import * as UserActionCreators from "./categoryActions";
+import * as UserActionCreators from "./userActions";
+import * as CaregoryActionCreators from "./categoryActions";
 import * as ProductsActionCreators from "./productsActions";
 
 export default {
-  ...UserActionCreators,
+  ...CaregoryActionCreators,
   ...ProductsActionCreators,
+  ...UserActionCreators,
 };

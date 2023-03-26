@@ -17,14 +17,55 @@ const RegisterPage = () => {
             <h2 className="text-4xl font-bold text-center py-4">Регестрація</h2>
 
             <div className="flex flex-col mb-4">
-              <label>Імя</label>
-              <input className="border relative bg-gray-100 p-2" type="text" />
+              <div className="flex flex-col ">
+                <label className="block text-sm font-medium text-gray-700">
+                  Фото
+                </label>
+
+                <div className="mt-1 flex items-center flex justify-center ...">
+                  <label
+                    htmlFor="selectImage"
+                    className="inline-block w-20 overflow-hidden bg-gray-100"
+                  >
+                    <svg
+                      className="h-full w-full text-gray-300"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </label>
+                  <label
+                    htmlFor="selectImage"
+                    className="ml-5 rounded-md border border-gray-300 bg-white 
+                        py-2 px-3 text-sm font-medium leading-4 text-gray-700 
+                        shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 
+                        focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    Змінити
+                  </label>
+                </div>
+
+                <input type="file" id="selectImage" className="hidden" />
+              </div>
+
+              <div className="flex flex-col ">
+                <label>Імя</label>
+                <input
+                  className="border relative bg-gray-100 p-2"
+                  type="text"
+                  id="name"
+                  name="name"
+                />
+              </div>
             </div>
             <div className="flex flex-col ">
               <label>Пароль</label>
               <input
                 className="border relative bg-gray-100 p-2"
                 type="password"
+                id="password"
+                name="password"
               />
             </div>
             <div className="flex flex-col ">
@@ -32,6 +73,8 @@ const RegisterPage = () => {
               <input
                 className="border relative bg-gray-100 p-2"
                 type="password"
+                id="passwordRepet"
+                name="passwordpasswordRepet"
               />
             </div>
             <button className="w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white">
