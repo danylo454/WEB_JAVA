@@ -12,7 +12,6 @@ import shop.dto.UploadImageDto;
 import shop.dto.category.CategoryCreateDTO;
 import shop.dto.category.CategoryItemDTO;
 import shop.dto.category.CategoryUpdateDTO;
-import shop.entities.CategoryEntity;
 import shop.interfaces.CategoryService;
 import shop.repositories.CategoryRepository;
 import shop.storage.StorageService;
