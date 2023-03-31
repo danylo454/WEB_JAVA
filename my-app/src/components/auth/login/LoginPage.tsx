@@ -4,7 +4,36 @@ import trees from "../../../assets/trees.jpg";
 import { Link } from "react-router-dom";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { ILoginUser } from "../types";
+import { loginSchema } from "../validation";
+import { useFormik } from "formik";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import http from "../../../services/http_common";
 const LoginPage = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const initValues: ILoginUser = {
+    email: "",
+    password: "",
+    reCaptchaToken: "",
+  };
+
+  const onSubmitFormik = async (values: ILoginUser) => {
+    console.log("Login form: ", values);
+
+    if (!executeRecaptcha) return;
+    values.reCaptchaToken = await executeRecaptcha();
+
+    const data = await http.post("/account/login", values);
+    console.log("Login user token: ", data.data.token);
+  };
+
+  const formik = useFormik({
+    initialValues: initValues,
+    onSubmit: onSubmitFormik,
+    validationSchema: loginSchema,
+  });
+  const { values, errors, touched, handleSubmit, handleChange, setFieldValue } =
+    formik;
   return (
     <>
       <div className="relative w-full h-screen bg-zinc-900/90">
@@ -15,7 +44,10 @@ const LoginPage = () => {
         />
 
         <div className="flex justify-center py-12">
-          <form className="max-w-[400px] w-full mx-auto bg-white p-8">
+          <form
+            className="max-w-[400px] w-full mx-auto bg-white p-8"
+            onSubmit={handleSubmit}
+          >
             <h2 className="text-4xl font-bold text-center py-4">
               Вхід на сайт.
             </h2>
@@ -28,15 +60,37 @@ const LoginPage = () => {
               </p>
             </div>
             <div className="flex flex-col mb-4">
-              <label>Username</label>
-              <input className="border relative bg-gray-100 p-2" type="text" />
+              <label>Емейл</label>
+              <input
+                className="border relative bg-gray-100 p-2"
+                type="text"
+                name="email"
+                id="email"
+                onChange={handleChange}
+                value={values.email}
+              />{" "}
+              {errors.email && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  <span className="font-medium">{errors.email}</span>
+                </p>
+              )}
             </div>
             <div className="flex flex-col ">
-              <label>Password</label>
+              <label>Пароль</label>
               <input
                 className="border relative bg-gray-100 p-2"
                 type="password"
+                name="password"
+                id="password"
+                autoComplete="true"
+                onChange={handleChange}
+                value={values.password}
               />
+              {errors.password && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  <span className="font-medium">{errors.password}</span>
+                </p>
+              )}
             </div>
             <button className="w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white">
               Увійти
