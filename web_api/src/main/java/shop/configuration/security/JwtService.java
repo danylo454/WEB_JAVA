@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -34,9 +36,10 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(format("%s,%s", user.getId(), user.getEmail()))
                 .claim("email", user.getEmail())
-                //.claim("image", user.getImage())
+                .claim("phone", user.getPhone())
+                .claim("image", user.getImage())
                 .claim("roles", roles.stream()                                      //витягується списочок ролей, які є у юзера
-                        .map((role) -> role.getRole().getName()).toArray(String []:: new))
+                        .map((role) -> role.getRole().getName()).toArray(String[]::new))
                 .setIssuer(jwtIssuer) //записуємо хто власник токена
                 .setIssuedAt(new Date(System.currentTimeMillis()))  //коли був створений токен
                 .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week  зазначаємо скільки часу буде жити токен
@@ -59,6 +62,7 @@ public class JwtService {
 
         return claims.getSubject().split(",")[0]; //з токена бере перший елемент Id
     }
+
     // з токена можна витягнути username юзера
     public String getUsername(String token) {
         Claims claims = Jwts.parser()
@@ -68,6 +72,7 @@ public class JwtService {
 
         return claims.getSubject().split(",")[1];
     }
+
     // метод повертає дату до якої живе токен
     public Date getExpirationDate(String token) {
         Claims claims = Jwts.parser()
@@ -77,13 +82,14 @@ public class JwtService {
 
         return claims.getExpiration();
     }
+
     //перевфряє чи наш токен валідний і чи видавався нашим сервером
     public boolean validate(String token) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (SignatureException ex) {
-            System.out.println("Invalid JWT signature - "+ ex.getMessage());
+            System.out.println("Invalid JWT signature - " + ex.getMessage());
         } catch (MalformedJwtException ex) {
             System.out.println("Invalid JWT token - " + ex.getMessage());
         } catch (ExpiredJwtException ex) {

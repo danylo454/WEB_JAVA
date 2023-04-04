@@ -12,6 +12,11 @@ import HomeProducts from "./components/productsPages/home";
 import ProductCreatePage from "./components/productsPages/Create";
 import ProductEditPage from "./components/productsPages/Edit";
 import InfoProdut from "./components/productsPages/Info";
+import AdminLayout from "./components/containers/admin";
+import AdminCategoryCreatePage from "./components/admin/categories/Create";
+import AdminProductCreatePage from "./components/admin/products/Create";
+import AdminCategoryEditPage from "./components/admin/categories/Edit";
+import UserProfile from "./components/auth/profile";
 
 function App() {
   return (
@@ -23,19 +28,30 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="updateCategory/:id" element={<EditCategory />} />
           <Route path="category/products/:id" element={<HomeProducts />} />
-          <Route path="categories/create" element={<CategoryCreatePage />} />
-          <Route path="product/create/:id" element={<ProductCreatePage />} />
-          <Route
-            path="category/products/update/:idCategory/:idProduct"
-            element={<ProductEditPage />}
-          />
           <Route
             path="category/products/info/:idCategory/:idProduct"
             element={<InfoProdut />}
           />
-
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="profile" element={<UserProfile />} />
         </Route>
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Home />} />
+
+          <Route
+            path="categories/create"
+            element={<AdminCategoryCreatePage />}
+          />
+          <Route
+            path="category/products/update/:idCategory/:idProduct"
+            element={<AdminCategoryEditPage />}
+          />
+
+          <Route path="product/create" element={<AdminProductCreatePage />} />
+        </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

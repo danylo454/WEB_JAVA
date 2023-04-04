@@ -2,7 +2,7 @@ import http from "./http_common";
 
 export async function register(user: any) {
   const data = await http
-    .post(`api/Account/register`, user)
+    .post(`api/account/register`, user)
     .then((response) => {
       return {
         response,
@@ -15,7 +15,7 @@ export async function register(user: any) {
 }
 export async function login(user: any) {
   const data = await http
-    .post(`api/Account/login`, user)
+    .post(`account/login`, user)
     .then((response) => {
       return {
         response,

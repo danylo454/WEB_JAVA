@@ -6,10 +6,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { ToastContainer } from "react-toastify";
+import { AuthUserToken } from "./store/actions/userActions";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+if (localStorage.token) {
+  AuthUserToken(localStorage.token, store.dispatch);
+}
+
 root.render(
   <Provider store={store}>
     <BrowserRouter>

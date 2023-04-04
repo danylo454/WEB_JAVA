@@ -118,14 +118,14 @@ const Home = () => {
           className="py-8"
           style={{ display: "flex", justifyContent: "end" }}
         >
-          <div className="button-new-category">
+          {/* <div className="button-new-category">
             <Link
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
               to="categories/create"
             >
               Add new category
             </Link>
-          </div>
+          </div> */}
         </div>
         {table_body.length == 0 ? (
           <div className="flex justify-center ... ">

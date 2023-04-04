@@ -4,12 +4,12 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ICategoryCreate } from "../types";
 import { Field, Formik } from "formik";
 import { CreateCategorySchema } from "../validate";
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../loader";
+import Loader from "../../../loader";
 
 const CategoryCreatePage = () => {
   const navigator = useNavigate();

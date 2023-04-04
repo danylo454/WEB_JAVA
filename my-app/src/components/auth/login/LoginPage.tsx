@@ -1,30 +1,37 @@
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import trees from "../../../assets/trees.jpg";
-import { Link } from "react-router-dom";
-import { useActions } from "../../../hooks/useActions";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ILoginUser } from "../types";
 import { loginSchema } from "../validation";
 import { useFormik } from "formik";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import http from "../../../services/http_common";
+import Loader from "../../loader";
+import { useActions } from "../../../hooks/useActions";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 const LoginPage = () => {
+  const navigator = useNavigate();
+  const { LoginUser } = useActions();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const initValues: ILoginUser = {
     email: "",
     password: "",
     reCaptchaToken: "",
   };
+  const { loading, message, isAuth } = useTypedSelector(
+    (store) => store.UserReducer
+  );
 
   const onSubmitFormik = async (values: ILoginUser) => {
     console.log("Login form: ", values);
 
     if (!executeRecaptcha) return;
     values.reCaptchaToken = await executeRecaptcha();
-
-    const data = await http.post("/account/login", values);
-    console.log("Login user token: ", data.data.token);
+    LoginUser(values);
   };
 
   const formik = useFormik({
@@ -32,10 +39,17 @@ const LoginPage = () => {
     onSubmit: onSubmitFormik,
     validationSchema: loginSchema,
   });
+  if (loading == true) {
+    return <Loader />;
+  }
+  if (message == "Successful login user") {
+    navigator("/");
+  }
   const { values, errors, touched, handleSubmit, handleChange, setFieldValue } =
     formik;
   return (
     <>
+      <ToastContainer draggable={false} autoClose={3000} />
       <div className="relative w-full h-screen bg-zinc-900/90">
         <img
           className="absolute w-full h-full object-cover mix-blend-overlay"
@@ -92,7 +106,10 @@ const LoginPage = () => {
                 </p>
               )}
             </div>
-            <button className="w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white">
+            <button
+              type="submit"
+              className="w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white"
+            >
               Увійти
             </button>
             <div className="my-4">

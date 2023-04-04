@@ -1,3 +1,4 @@
+import { IUser } from "../../actions/userActions/types";
 import { UserActions, UserActionTypes, UserState } from "./types";
 
 const initialState: UserState = {
@@ -8,7 +9,15 @@ const initialState: UserState = {
 };
 const UserReducer = (state = initialState, action: UserActions): UserState => {
   switch (action.type) {
-    case UserActionTypes.START_REQUEST: {
+    case UserActionTypes.SUCCESSFUL_REQUEST_LOGIN_USER: {
+      return {
+        ...state,
+        loading: false,
+        isAuth: true,
+        user: action.payload.payload,
+      };
+    }
+    case UserActionTypes.START_REQUESTS: {
       return {
         ...state,
         loading: true,
@@ -19,6 +28,16 @@ const UserReducer = (state = initialState, action: UserActions): UserState => {
         ...state,
         loading: false,
         message: action.payload.message,
+      };
+    }
+    case UserActionTypes.SUCCESSFUL_LOGIN_USER: {
+      const user: IUser = action.payload as IUser;
+      return {
+        ...state,
+        isAuth: true,
+        user: user,
+        loading: false,
+        message: "Successful login user",
       };
     }
     case UserActionTypes.SUCCESSFUL_REQUEST_REGISTER_USER: {

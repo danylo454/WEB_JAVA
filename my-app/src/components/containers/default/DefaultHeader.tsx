@@ -17,6 +17,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 const solutions = [
   {
@@ -99,17 +100,29 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 const DefaultHeader = () => {
+  const { isAuth, user } = useTypedSelector((store) => store.UserReducer);
+
+  let isAdmin = false;
+  if (isAuth && user) {
+    for (let i = 0; i < user?.roles.length; i++)
+      if (user?.roles[i] === "admin") isAdmin = true;
+  }
+
+  const LogoutUser = (e: any) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    // dispatch({
+    //   type: AuthUserActionType.LOGOUT_USER,
+    // });
+  };
   return (
     <>
-      <Popover
-        className="relative "
-        style={{ zIndex: 100, backgroundColor: "white" }}
-      >
-        <div className="container mx-auto">
+      <Popover className="relative bg-white" style={{ zIndex: 100 }}>
+        <div className="container mx-auto ">
           <div className="flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link to="/">
-                <span className="sr-only">Your Company</span>
+                <span className="sr-only">Магазин Logo</span>
                 <img
                   className="h-8 w-auto sm:h-10"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -117,7 +130,6 @@ const DefaultHeader = () => {
                 />
               </Link>
             </div>
-
             <div className="-my-2 -mr-2 md:hidden">
               <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span className="sr-only">Open menu</span>
@@ -200,18 +212,22 @@ const DefaultHeader = () => {
                 )}
               </Popover>
 
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
               >
-                Pricing
-              </a>
-              <a
-                href="#"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                Docs
-              </a>
+                Товари
+              </Link>
+
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
+                  Адмін панель
+                </Link>
+              )}
+
               <Popover className="relative">
                 {({ open }) => (
                   <>
@@ -302,22 +318,44 @@ const DefaultHeader = () => {
                 )}
               </Popover>
             </Popover.Group>
+
             <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-              <Link
-                to="/login"
-                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-              >
-                Увійти
-              </Link>
-              <Link
-                to="/register"
-                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-              >
-                Зареєструватися
-              </Link>
+              {isAuth ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    {user?.email}
+                  </Link>
+                  <Link
+                    to="#"
+                    onClick={LogoutUser}
+                    className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    Вихід
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    Вхід
+                  </Link>
+                  <a
+                    href="#"
+                    className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    Sign up
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>
+
         <Transition
           as={Fragment}
           enter="duration-200 ease-out"
@@ -393,12 +431,12 @@ const DefaultHeader = () => {
                   ))}
                 </div>
                 <div>
-                  <Link
-                    to="/register"
+                  <a
+                    href="#"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
-                    Зареєструватися
-                  </Link>
+                    Sign up
+                  </a>
                   <p className="mt-6 text-center text-base font-medium text-gray-500">
                     Existing customer?{" "}
                     <Link
