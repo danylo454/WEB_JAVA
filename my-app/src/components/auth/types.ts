@@ -12,4 +12,6 @@ export interface IRegisterUser {
   password: string;
   image: File | null;
   reCaptchaToken: string;
+  confirmPassword: string;
 }
+

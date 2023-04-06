@@ -1,20 +1,18 @@
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import trees from "../../../assets/trees.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ILoginUser } from "../types";
 import { loginSchema } from "../validation";
 import { useFormik } from "formik";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import http from "../../../services/http_common";
 import Loader from "../../loader";
 import { useActions } from "../../../hooks/useActions";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 const LoginPage = () => {
-  const navigator = useNavigate();
   const { LoginUser } = useActions();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const initValues: ILoginUser = {
@@ -27,8 +25,6 @@ const LoginPage = () => {
   );
 
   const onSubmitFormik = async (values: ILoginUser) => {
-    console.log("Login form: ", values);
-
     if (!executeRecaptcha) return;
     values.reCaptchaToken = await executeRecaptcha();
     LoginUser(values);
@@ -39,11 +35,11 @@ const LoginPage = () => {
     onSubmit: onSubmitFormik,
     validationSchema: loginSchema,
   });
-  if (loading == true) {
+  if (loading) {
     return <Loader />;
   }
   if (message == "Successful login user") {
-    navigator("/");
+    return <Navigate to={"/"}></Navigate>
   }
   const { values, errors, touched, handleSubmit, handleChange, setFieldValue } =
     formik;
@@ -82,6 +78,7 @@ const LoginPage = () => {
                 id="email"
                 onChange={handleChange}
                 value={values.email}
+                placeholder="Email"
               />{" "}
               {errors.email && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -92,6 +89,7 @@ const LoginPage = () => {
             <div className="flex flex-col ">
               <label>Пароль</label>
               <input
+                placeholder="Пароль"
                 className="border relative bg-gray-100 p-2"
                 type="password"
                 name="password"

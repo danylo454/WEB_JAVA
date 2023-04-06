@@ -75,7 +75,7 @@ const ProductCreatePage = () => {
           files: [],
         }}
         validationSchema={CreateProductSchema}
-        onSubmit={(e) => {}}
+        onSubmit={(e) => { }}
       >
         {({ errors, touched, isValid, dirty }) => (
           <form onSubmit={onSubmitHandler}>

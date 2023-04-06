@@ -8,7 +8,7 @@ import setAuthToken from "../../../services/setAuthToken";
 export const RegisterUser = (user: any) => {
   return async (dispatch: Dispatch<UserActions>) => {
     try {
-      dispatch({ type: UserActionTypes.START_REQUESTS });
+      dispatch({ type: UserActionTypes.START_REQUESTS_USER });
       console.log("response Start");
       const data = await register(user);
       const { response } = data;
@@ -33,7 +33,7 @@ export const RegisterUser = (user: any) => {
 export const LoginUser = (user: any) => {
   return async (dispatch: Dispatch<UserActions>) => {
     try {
-      dispatch({ type: UserActionTypes.START_REQUESTS });
+      dispatch({ type: UserActionTypes.START_REQUESTS_USER });
       const data = await login(user);
       const { response } = data;
       console.log(response.data);
@@ -56,6 +56,9 @@ export const AuthUserToken = (
   try {
     const user = jwtDecode(token) as IUser;
 
+
+    setAuthToken(token);
+    localStorage.token = token;
     dispatch({
       type: UserActionTypes.SUCCESSFUL_LOGIN_USER,
       payload: {
@@ -65,8 +68,6 @@ export const AuthUserToken = (
         roles: user.roles,
       } as IUser,
     });
-    setAuthToken(token);
-    localStorage.token = token;
   } catch (e) {
     toast.error("Auth User Token Problems !!!", {
       position: toast.POSITION.TOP_RIGHT,
@@ -76,4 +77,21 @@ export const AuthUserToken = (
       payload: "AuthUserToken error",
     });
   }
+};
+
+export const LogoutUser = () => {
+  return async (dispatch: Dispatch<UserActions>) => {
+    try {
+      dispatch({ type: UserActionTypes.LOGOUT_USER });
+
+    } catch (e) {
+      toast.error("Logout User Error !!!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      dispatch({
+        type: UserActionTypes.SERVER_USER_ERROR,
+        payload: "Logout User Error !!!",
+      });
+    }
+  };
 };

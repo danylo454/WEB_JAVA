@@ -23,23 +23,13 @@ const CategoryCreatePage = () => {
     file: null,
   });
   const onFileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //console.log("files", e.target.files);
     const { target } = e;
     const { files } = target;
     if (files) {
       const file = files[0];
       setModel({ ...model, file });
-      // const fileReader = new FileReader();
-      // fileReader.readAsDataURL(file);
-      // fileReader.onload = (e) => {
-      //   const result = e.target?.result as string;
-      //   // console.log("Read all bytes");
-      //   setModel({ ...model, file: result });
-      // };
     }
-
     target.value = "";
-    //setModel({...model, [e.target.name]: e.target.value});
   };
   if (loading) {
     return <Loader />;

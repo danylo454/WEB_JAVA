@@ -19,7 +19,7 @@ import {
 export const GetProductsCategories = (idCategory: number) => {
   return async (dispatch: Dispatch<ProductsActions>) => {
     try {
-      dispatch({ type: ProductActionTypes.START_REQUEST });
+      dispatch({ type: ProductActionTypes.START_REQUEST_PRODUCT });
       const data = await getProductsCategories(idCategory);
       const { response } = data;
       dispatch({
@@ -41,7 +41,7 @@ export const GetProductsCategories = (idCategory: number) => {
 export const CreateProduct = (model: IProduct) => {
   return async (dispatch: Dispatch<ProductsActions>) => {
     try {
-      dispatch({ type: ProductActionTypes.START_REQUEST });
+      dispatch({ type: ProductActionTypes.START_REQUEST_PRODUCT });
 
       const data = await createProduct(model);
       const { response } = data;
@@ -82,7 +82,7 @@ export const RemoveImageFileProduct = (image: String) => {
 export const GetByIdProduct = (id: number) => {
   return async (dispatch: Dispatch<ProductsActions>) => {
     try {
-      dispatch({ type: ProductActionTypes.START_REQUEST });
+      dispatch({ type: ProductActionTypes.START_REQUEST_PRODUCT });
 
       const data = await getByIdProduct(id);
       const { response } = data;
@@ -104,7 +104,7 @@ export const GetByIdProduct = (id: number) => {
 export const UpdateProduct = (id: number, model: IEditItemPostProduct) => {
   return async (dispatch: Dispatch<ProductsActions>) => {
     try {
-      dispatch({ type: ProductActionTypes.START_REQUEST });
+      dispatch({ type: ProductActionTypes.START_REQUEST_PRODUCT });
       console.log("UpdateProduct before");
       const data = await updateProduct(id, model);
       console.log("UpdateProduct after: ", data.response);
@@ -154,6 +154,6 @@ export const RemoveProduct = (id: number) => {
 };
 export const StartReques = () => {
   return async (dispatch: Dispatch<ProductsActions>) => {
-    dispatch({ type: ProductActionTypes.START_REQUEST });
+    dispatch({ type: ProductActionTypes.START_REQUEST_PRODUCT });
   };
 };

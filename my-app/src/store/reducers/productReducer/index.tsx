@@ -26,7 +26,7 @@ const ProductsReducer = (
         products: products.filter((item) => item.id != action.payload),
       };
     }
-    case ProductActionTypes.START_REQUEST: {
+    case ProductActionTypes.START_REQUEST_PRODUCT: {
       return {
         ...state,
         productForUpdate: {

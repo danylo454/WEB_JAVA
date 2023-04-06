@@ -15,11 +15,13 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import setAuthToken from "../../../services/setAuthToken";
+import { UserActionTypes } from "../../../store/reducers/userReducer/types";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -29,6 +31,20 @@ const AdminHeader = () => {
   const LogoutUser = (e: any) => {
     e.preventDefault();
     localStorage.removeItem("token");
+  };
+  const dispatch = useDispatch();
+  const navigator = useNavigate();
+  const logoutUser = (e: any) => {
+    e.preventDefault();
+    // LogoutUser();
+    setAuthToken("");
+    localStorage.removeItem("token");
+    dispatch({
+      type: UserActionTypes.LOGOUT_USER,
+    });
+    navigator("/login");
+
+
   };
   return (
     <>
@@ -127,35 +143,33 @@ const AdminHeader = () => {
             <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="space-y-6 py-6 px-5">
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                  <a
-                    href="#"
+                  <Link
+                    to="/admin/categories/create"
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
                   >
-                    Pricing
-                  </a>
-                  <a
-                    href="#"
+                    Додати Категорію
+                  </Link>
+                  <Link
+                    to="/admin/product/create"
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
                   >
-                    Docs
-                  </a>
+                    Додати Продукт
+                  </Link>
+                  <Link
+                    to={"/"}
+                    className="text-base font-medium text-gray-900 hover:text-gray-700"
+                  >
+                    Товари
+                  </Link>
                 </div>
                 <div>
-                  <a
-                    href="#"
+                  <button
+                    onClick={logoutUser}
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
-                    Sign up
-                  </a>
-                  <p className="mt-6 text-center text-base font-medium text-gray-500">
-                    Existing customer?{" "}
-                    <Link
-                      to="/login"
-                      className="text-indigo-600 hover:text-indigo-500"
-                    >
-                      Вхід
-                    </Link>
-                  </p>
+                    Вихід
+                  </button>
+
                 </div>
               </div>
             </div>

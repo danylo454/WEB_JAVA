@@ -21,13 +21,13 @@ const CategoryReducer = (
         categories: [],
       };
     }
-    case CategoryActionTypes.SET_ID_CATEGORY_FOR_UPDATE: {
+    case CategoryActionTypes.SET_ID_CATEGORY_FOR_UPDATE_CATEGORY: {
       return {
         ...state,
         loading: true,
       };
     }
-    case CategoryActionTypes.REMOVE_CATEGORY_SUCCESSFUL: {
+    case CategoryActionTypes.SUCCESSFUL_REMOVE_CATEGORY: {
       const { categories } = state;
       return {
         ...state,
@@ -36,7 +36,7 @@ const CategoryReducer = (
         categories: categories.filter((item) => item.id != action.payload),
       };
     }
-    case CategoryActionTypes.START_REQUEST: {
+    case CategoryActionTypes.START_REQUEST_CATEGORY: {
       return { ...state, loading: true, message: "", categories: [] };
     }
     case CategoryActionTypes.SUCCESSFUL_REQUEST_LIST_CATEGORYES: {

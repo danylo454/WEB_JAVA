@@ -19,7 +19,7 @@ import {
 export const GetCategories = () => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
-      dispatch({ type: CategoryActionTypes.START_REQUEST });
+      dispatch({ type: CategoryActionTypes.START_REQUEST_CATEGORY });
       const data = await getCategories();
       const { response } = data;
 
@@ -41,7 +41,7 @@ export const GetCategories = () => {
 export const GetCategoriesById = (id: number) => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
-      dispatch({ type: CategoryActionTypes.START_REQUEST });
+      dispatch({ type: CategoryActionTypes.START_REQUEST_CATEGORY });
       const data = await getCategoriesById(id);
       const { response } = data;
       console.log("response: ", response);
@@ -66,7 +66,7 @@ export const SetCategoriForUpdate = (id: number) => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
       dispatch({
-        type: CategoryActionTypes.SET_ID_CATEGORY_FOR_UPDATE,
+        type: CategoryActionTypes.SET_ID_CATEGORY_FOR_UPDATE_CATEGORY,
         payload: id,
       });
     } catch (e) {
@@ -84,7 +84,7 @@ export const SetCategoriForUpdate = (id: number) => {
 export const CreateCategory = (model: ICategoryCreate) => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
-      dispatch({ type: CategoryActionTypes.START_REQUEST });
+      dispatch({ type: CategoryActionTypes.START_REQUEST_CATEGORY });
 
       const data = await createCategory(model);
       const { response } = data;
@@ -110,7 +110,7 @@ export const CreateCategory = (model: ICategoryCreate) => {
 export const UpdateCategory = (model: ICategoryUpdate) => {
   return async (dispatch: Dispatch<CategoryesActions>) => {
     try {
-      dispatch({ type: CategoryActionTypes.START_REQUEST });
+      dispatch({ type: CategoryActionTypes.START_REQUEST_CATEGORY });
 
       const data = await updateCategory(model);
 
@@ -146,7 +146,7 @@ export const RemoveCategory = (id: number) => {
       console.log(response.data);
 
       dispatch({
-        type: CategoryActionTypes.REMOVE_CATEGORY_SUCCESSFUL,
+        type: CategoryActionTypes.SUCCESSFUL_REMOVE_CATEGORY,
         payload: id,
       });
       // return Promise.resolve();

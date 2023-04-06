@@ -17,7 +17,7 @@ const UserReducer = (state = initialState, action: UserActions): UserState => {
         user: action.payload.payload,
       };
     }
-    case UserActionTypes.START_REQUESTS: {
+    case UserActionTypes.START_REQUESTS_USER: {
       return {
         ...state,
         loading: true,
@@ -47,6 +47,15 @@ const UserReducer = (state = initialState, action: UserActions): UserState => {
         message: action.payload.message,
         user: action.payload.payload,
         isAuth: true,
+      };
+    }
+    case UserActionTypes.LOGOUT_USER: {
+      return {
+        ...state,
+        loading: false,
+        message: "Logout user successful",
+        user: null,
+        isAuth: false,
       };
     }
     default: {

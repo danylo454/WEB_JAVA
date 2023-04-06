@@ -17,7 +17,7 @@ interface IItemProduct {
 }
 
 export enum ProductActionTypes {
-  START_REQUEST = "START_REQUEST",
+  START_REQUEST_PRODUCT = "START_REQUEST_PRODUCT",
   REMOVE_PRODUCT_SUCCESSFUL = "REMOVE_PRODUCT_SUCCESSFUL",
   SUCCESSFUL_REQUEST_GET_PRODUCT = "SUCCESSFUL_REQUEST_GET_PRODUCT",
   SUCCESSFUL_REQUEST__REMOVE_IMAGE_PRODUCT = "SUCCESSFUL_REQUEST__REMOVE_IMAGE_PRODUCT",
@@ -28,7 +28,7 @@ export enum ProductActionTypes {
 }
 
 interface StartRequestAction {
-  type: ProductActionTypes.START_REQUEST;
+  type: ProductActionTypes.START_REQUEST_PRODUCT;
 }
 interface SuccessfulRemoveProductAction {
   type: ProductActionTypes.REMOVE_PRODUCT_SUCCESSFUL;
