@@ -5,19 +5,16 @@ import { toast } from "react-toastify";
 import { IUser } from "./types";
 import jwtDecode from "jwt-decode";
 import setAuthToken from "../../../services/setAuthToken";
-export const RegisterUser = (user: any) => {
+import { IRegisterUser } from "../../../components/auth/types";
+
+export const RegisterUser = (user: IRegisterUser) => {
   return async (dispatch: Dispatch<UserActions>) => {
     try {
       dispatch({ type: UserActionTypes.START_REQUESTS_USER });
-      console.log("response Start");
       const data = await register(user);
       const { response } = data;
-      console.log("Response : ", response);
-      console.log(response);
-      dispatch({
-        type: UserActionTypes.SUCCESSFUL_REQUEST_REGISTER_USER,
-        payload: response.data,
-      });
+      console.log(response.data.payload);
+      AuthUserToken(response.data.payload, dispatch);
     } catch (e) {
       toast.error("Some problems!!!", {
         position: toast.POSITION.TOP_RIGHT,
@@ -49,10 +46,7 @@ export const LoginUser = (user: any) => {
     }
   };
 };
-export const AuthUserToken = (
-  token: string,
-  dispatch: Dispatch<UserActions>
-) => {
+export const AuthUserToken = (token: string, dispatch: Dispatch<UserActions>) => {
   try {
     const user = jwtDecode(token) as IUser;
 
@@ -95,3 +89,4 @@ export const LogoutUser = () => {
     }
   };
 };
+

@@ -1,6 +1,6 @@
 import { Field, Formik, useFormik } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { ICategoryItem, IProduct } from "../types";
@@ -10,10 +10,13 @@ import { useActions } from "../../../../hooks/useActions";
 import Loader from "../../../loader";
 import http from "../../../../services/http_common";
 import { APP_ENV } from "../../../../env";
-
+import { Category } from "@mui/icons-material";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const ProductCreatePage = () => {
   const { CreateProduct } = useActions();
   const { id } = useParams();
+  const navigate = useNavigate();
   const { loading, message } = useTypedSelector(
     (store) => store.ProductsReducer
   );
@@ -24,29 +27,31 @@ const ProductCreatePage = () => {
     description: "",
     files: [],
   });
-  // if (loading) {
-  //   return <Loader />;
-  // }
   const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
   useEffect(() => {
-    console.log(`${APP_ENV.REMOTE_HOST_NAME}api/categories`);
+    console.log(`${APP_ENV.REMOTE_HOST_NAME}`);
     http
-      .get<Array<ICategoryItem>>(`${APP_ENV.REMOTE_HOST_NAME}api/categories`)
+      .get<Array<ICategoryItem>>(`http://localhost:8081/api/categories/`)
       .then((resp) => {
         console.log("resp = ", resp);
-
         setCategories(resp.data);
       });
   }, []);
 
   if (message == "Successful request create product") {
-    return <Navigate to={"/category/products/" + id} />;
+    return <Navigate to={"/"} />;
   }
 
-  const onChangeHandler = (
-    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    console.log("input", e.target);
+  if (categories.length == 0) {
+    toast.error("Створіть спершу катугорію", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    // navigate("/admin/categories/create");
+    return <Navigate to={"/admin/categories/create"} />;
+  }
+  const onChangeSelectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    //console.log("input", e.target);
+    //console.log("input", e.target.value);
     setModel({ ...model, [e.target.name]: e.target.value });
   };
 
@@ -78,11 +83,13 @@ const ProductCreatePage = () => {
     </option>
   ));
 
+
   const filesContent = model.files.map((f, index) =>
     f == null ? null : (
       <img key={index} className="m-1 " src={URL.createObjectURL(f)} />
     )
   );
+
   return (
     <>
       <ToastContainer draggable={false} autoClose={3000} />
@@ -95,7 +102,7 @@ const ProductCreatePage = () => {
           files: [],
         }}
         validationSchema={CreateProductSchema}
-        onSubmit={(e) => {}}
+        onSubmit={(e) => { }}
       >
         {({ errors, touched, isValid, dirty }) => (
           <form onSubmit={onSubmitHandler}>
@@ -142,6 +149,23 @@ const ProductCreatePage = () => {
                     {errors.price && touched.price ? (
                       <div style={{ color: "red" }}>{errors.price}</div>
                     ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="countries"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Оберіть категорію
+                    </label>
+                    <select
+                      onChange={onChangeSelectHandler}
+                      id="category_id"
+                      name="category_id"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option selected>Виберіть категорію</option>
+                      {content}
+                    </select>
                   </div>
 
                   <div>

@@ -9,11 +9,12 @@ import { registerSchema } from "../validation";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Navigate } from "react-router-dom";
 const RegisterPage = () => {
   const { loading, message, isAuth } = useTypedSelector(
     (store) => store.UserReducer
   );
-  // const { } = useActions();
+  const { RegisterUser } = useActions();
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const [model, setModel] = useState<IRegisterUser>({
@@ -39,10 +40,11 @@ const RegisterPage = () => {
   };
   const onSubmitFormik = async (values: IRegisterUser) => {
     try {
-      console.log("onSubmitFormik: ", values);
       if (!executeRecaptcha) return;
       values.reCaptchaToken = await executeRecaptcha();
-      console.log("onSubmitFormik: ", values);
+      console.log(values);
+      RegisterUser(values);
+
     } catch (errors: any) { console.log("Щось пішло не так !!!") }
 
   };
@@ -54,10 +56,13 @@ const RegisterPage = () => {
   if (loading) {
     return <Loader />;
   }
+  if (message == "Successful login user") {
+    return <Navigate to={"/"}></Navigate>
+  }
 
   const { values, errors, touched, handleSubmit, handleChange, setFieldValue } =
     formik;
-    
+
   return (
     <>
       <ToastContainer draggable={false} autoClose={3000} />
@@ -161,6 +166,22 @@ const RegisterPage = () => {
                 /> {errors.phone && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                     <span className="font-medium">{errors.phone}</span>
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col ">
+                <label>Телефон</label>
+                <input
+                  className="border relative bg-gray-100 p-2"
+                  type="email"
+                  placeholder="user@gmail.com"
+                  id="email"
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                /> {errors.email && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <span className="font-medium">{errors.email}</span>
                   </p>
                 )}
               </div>

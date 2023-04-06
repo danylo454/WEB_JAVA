@@ -28,7 +28,7 @@ const UserProfile = () => {
               <div className="border-b-2 block md:flex">
                 <div className="w-full  md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
                   <div className="w-full  p-8 mx-2 flex justify-center items-center">
-                    {user?.image != null ? (
+                    {user?.image != null && user.image != "" ? (
                       <>
                         <img
                           style={{ minHeight: "280px", cursor: "pointer" }}

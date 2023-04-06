@@ -23,8 +23,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/categories")
-public class CategoryController {
-    private final CategoryRepository categoryRepository;
+public class CategoryController { private final CategoryRepository categoryRepository;
     private final StorageService storageService;
     private final CategoryService categoryService;
 

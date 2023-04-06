@@ -1,8 +1,9 @@
+import { IRegisterUser } from "../components/auth/types";
 import http from "./http_common";
 
-export async function register(user: any) {
+export async function register(user: IRegisterUser) {
   const data = await http
-    .post(`api/account/register`, user)
+    .post(`/account/register`, user)
     .then((response) => {
       return {
         response,

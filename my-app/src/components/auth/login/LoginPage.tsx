@@ -12,6 +12,7 @@ import Loader from "../../loader";
 import { useActions } from "../../../hooks/useActions";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import GoogleAuth from "../google/GoogleAuth";
 const LoginPage = () => {
   const { LoginUser } = useActions();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -66,7 +67,8 @@ const LoginPage = () => {
                 <AiFillFacebook className="mr-2" /> Facebook
               </p>
               <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center">
-                <FcGoogle className="mr-2" /> Google
+                {/* <FcGoogle className="mr-2" /> Google */}
+                <GoogleAuth />
               </p>
             </div>
             <div className="flex flex-col mb-4">

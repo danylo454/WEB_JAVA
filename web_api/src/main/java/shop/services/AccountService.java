@@ -3,6 +3,7 @@ package shop.services;
 import org.springframework.web.client.RestOperations;
 import shop.configuration.captcha.CaptchaSettings;
 import shop.configuration.captcha.GoogleResponse;
+import shop.dto.ServiceResponseDto;
 import shop.dto.account.LoginDto;
 import shop.dto.account.AuthResponseDto;
 import shop.dto.account.RegisterDto;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.repositories.UserRoleRepository;
+import shop.storage.StorageService;
 
 import java.util.ArrayList;
 
@@ -30,22 +32,41 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    private final StorageService storageService;
     private final CaptchaSettings captchaSettings;
     private final RestOperations restTemplate;
     protected static final String RECAPTCHA_URL_TEMPLATE = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
 
 
-    public AuthResponseDto register(RegisterDto request) {
+    public ServiceResponseDto register(RegisterDto request) {
+        String url = String.format(RECAPTCHA_URL_TEMPLATE, captchaSettings.getSecret(), request.getReCaptchaToken());
+        final GoogleResponse googleResponse = restTemplate.getForObject(url, GoogleResponse.class);
+        if (!googleResponse.isSuccess()) {   //перевіряємо чи запит успішний
+            return new ServiceResponseDto("reCaptcha was not successfully validated");
+        }
+        var temp = repository.findByEmail(request.getEmail());
+        if (temp.isPresent()) {
+            return new ServiceResponseDto("Bad reques user already exist");
+        }
+        String userImage = "";
+        if (request.getImage() != null) {
+            var fileName = storageService.saveMultipartFile(request.getImage());
+            userImage = fileName;
+        }
         var user = UserEntity.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
+                .firstName(request.getName())
+                .lastName(request.getSurname())
                 .email(request.getEmail())
-                .phone("093 839 43 23")
+                .phone(request.getPhone())
+                .email(request.getEmail())
+                .image(userImage)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
+
         repository.save(user);
+
         var role = roleRepository.findByName(Roles.User);
+
         var ur = new UserRoleEntity().builder()
                 .user(user)
                 .role(role)
@@ -53,9 +74,9 @@ public class AccountService {
         userRoleRepository.save(ur);
 
         var jwtToken = jwtService.generateAccessToken(user);
-        return AuthResponseDto.builder()
-                .token(jwtToken)
-                .build();
+        return new ServiceResponseDto("Successful create user", jwtToken);
+
+
     }
 
     public AuthResponseDto login(LoginDto request) {
